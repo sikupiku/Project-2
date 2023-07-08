@@ -16,8 +16,10 @@ describe('Issue create', () => {
       cy.get('[data-testid="select-option:Story"]')
           .trigger('click');
             
+
       //Type value to description input field
       cy.get('.ql-editor').type('TEST_DESCRIPTION');
+
 
       //Type value to title input field
       //Order of filling in the fields is first description, then title on purpose
@@ -52,6 +54,34 @@ describe('Issue create', () => {
       //Assert that correct avatar and type icon are visible
       cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
       cy.get('[data-testid="icon:story"]').should('be.visible');
+    });
+  });
+
+  // Test 1
+  it('Test - Should create an issue and validate it successfully', () => {
+    //System finds modal for creating issue and does next steps inside of it
+    cy.get('[data-testid="modal:issue-create"]').within(() => {
+      
+      //open issue type dropdown and choose Bug
+      cy.get('[data-testid="form-field:type"]').click();
+      cy.get('[data-testid="select-option:Bug"]')
+          .trigger('click');
+            
+      cy.get('.ql-editor').type('My bug description');
+
+      cy.get('input[name="title"]').type('Bug');
+      
+      //Select Pickle Rick from reporter dropdown
+      cy.get('[data-testid="select:userIds"]').click();
+      cy.get('[data-testid="select-option:Pickle Rick"]').click();
+
+      //Click on button "Create issue"
+      cy.get('button[type="submit"]').click();
+      
+        
+      cy.get('[data-testid="select:priority"]').click();
+      cy.get('[data-testid="select-option:Highest"]')
+          .trigger('click');
     });
   });
 
