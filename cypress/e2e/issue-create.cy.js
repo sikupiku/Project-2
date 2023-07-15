@@ -58,7 +58,7 @@ describe('Issue create', () => {
   });
 
   // Test 1
-  it('Test - Should create an issue and validate it successfully', () => {
+  it.only('Test - Should create an issue and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
       
@@ -83,7 +83,27 @@ describe('Issue create', () => {
       cy.get('[data-testid="select-option:Highest"]')
           .trigger('click');
     });
+
+ 
+  cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+  cy.contains('Issue has been successfully created.').should('be.visible');
+  
+  cy.reload();
+  cy.contains('Issue has been successfully created.').should('not.exist');
+
+  cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
+    //Assert that this list contains 5 issues and first element with tag p has specified text
+    cy.get('[data-testid="list-issue"]')
+        .should('have.length', '5')
+        .first()
+        .find('p')
+        .contains('Bug');
+    //Assert that correct avatar and type icon are visible
+    cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
+    cy.get('[data-testid="icon:story"]').should('be.visible');
   });
+});
+
 
   it('Should validate title is required field if missing', () => {
     //System finds modal for creating issue and does next steps inside of it
